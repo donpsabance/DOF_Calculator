@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">DOF_Calculator</string>
     <string name="select_a_lens_to_use">Select a lens to use:</string>
+    <string name="camera_selected"> </string>
 </resources>

@@ -28,6 +28,6 @@ public class Lens {
 
     @Override
     public String toString() {
-        return make + ", " + focalLength + "mm, " + maxAperture;
+        return make + " " + focalLength + "mm F" + maxAperture;
     }
 }

@@ -2,6 +2,7 @@ package com.dabance.dof_calculator;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -12,12 +13,13 @@ import android.widget.Toast;
 
 import com.dabance.dof_calculator.model.Lens;
 import com.dabance.dof_calculator.model.LensManager;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private LensManager lensManager = new LensManager();
+    private LensManager lensManager = LensManager.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +29,16 @@ public class MainActivity extends AppCompatActivity {
         loadLens();
         showLens();
         registerClickFeedback();
+
+        FloatingActionButton fab = findViewById(R.id.addLensButton);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = AddLensActivity.makeIntent(MainActivity.this);
+                startActivity(intent);
+            }
+        });
 
     }
 
@@ -56,8 +68,15 @@ public class MainActivity extends AppCompatActivity {
                 TextView tv = (TextView) view;
                 String message = "You have selected lens: " + ((TextView) view).getText().toString();
                 Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+
+                Intent intent = CalculationsActivity.makeIntent(MainActivity.this, position);
+                startActivity(intent);
+
+
             }
         });
     }
+
+
 
 }
