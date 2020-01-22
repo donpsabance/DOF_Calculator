@@ -72,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = CalculationsActivity.makeIntent(MainActivity.this, position);
                 startActivity(intent);
 
-
             }
         });
     }
