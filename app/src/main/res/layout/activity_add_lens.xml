@@ -4,21 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    app:errorEnabled="true"
     tools:context=".AddLensActivity">
 
     <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/textInputEditText2"
-        android:layout_width="304dp"
+        android:id="@+id/apertureInput"
+        android:layout_width="0dp"
         android:layout_height="55dp"
         android:hint="ex: 2.8 for F2.8"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
     <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/textInputEditText"
-        android:layout_width="304dp"
+        android:id="@+id/focalLengthInput"
+        android:layout_width="0dp"
         android:layout_height="55dp"
         android:hint="ex: 200 for 200mm"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
@@ -30,7 +33,7 @@
         android:text="Aperture"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/textInputEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/focalLengthInput" />
 
     <TextView
         android:id="@+id/textView"
@@ -49,7 +52,7 @@
         android:text="Focal Length [mm]"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/textInputEditText3" />
+        app:layout_constraintTop_toBottomOf="@+id/makeInput" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
@@ -59,10 +62,11 @@
         app:layout_constraintGuide_percent="0.08" />
 
     <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/textInputEditText3"
-        android:layout_width="304dp"
+        android:id="@+id/makeInput"
+        android:layout_width="0dp"
         android:layout_height="55dp"
         android:hint="ex: Cannon"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
@@ -70,19 +74,17 @@
         android:id="@+id/cancelButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:text="Cancel"
         app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/textInputEditText2" />
+        app:layout_constraintTop_toTopOf="@+id/guideline12" />
 
     <Button
         android:id="@+id/saveButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:text="Save"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/textInputEditText2" />
+        app:layout_constraintTop_toTopOf="@+id/guideline12" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline3"
@@ -97,5 +99,12 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.08" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.60" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

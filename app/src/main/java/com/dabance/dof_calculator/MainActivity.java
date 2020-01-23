@@ -19,6 +19,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final int ADD_REQUEST_CODE = 1;
     private LensManager lensManager = LensManager.getInstance();
 
     @Override
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
         loadLens();
         showLens();
         registerClickFeedback();
+        setTitle(getString(R.string.title));
 
         FloatingActionButton fab = findViewById(R.id.addLensButton);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -36,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 Intent intent = AddLensActivity.makeIntent(MainActivity.this);
-                startActivity(intent);
+                startActivityForResult(intent, ADD_REQUEST_CODE);
             }
         });
 
@@ -76,6 +78,16 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
 
+        if(requestCode == ADD_REQUEST_CODE){
+            if(resultCode == RESULT_OK){
+
+                showLens();
+            }
+        }
+    }
 
 }
