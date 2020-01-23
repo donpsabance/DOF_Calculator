@@ -10,7 +10,7 @@
         android:id="@+id/textView12"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Near Focal Point"
+        android:text="@string/nearFocalPointTextView"
         android:textSize="18sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline9"
         app:layout_constraintTop_toTopOf="@+id/guideline10" />
@@ -20,8 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="4dp"
-        android:text="Depth Of Field"
+        android:text="@string/DOFTextView"
         android:textSize="18sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline9"
         app:layout_constraintTop_toBottomOf="@+id/textView10" />
@@ -31,7 +30,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="Far Focal Point"
+        android:text="@string/farFocalPointTextView"
         android:textSize="18sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline9"
         app:layout_constraintTop_toBottomOf="@+id/textView12" />
@@ -41,7 +40,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:hint="ex: 2.8 for F2.8"
+        android:hint="@string/selectedApertureInput"
         app:layout_constraintEnd_toStartOf="@+id/guideline8"
         app:layout_constraintStart_toEndOf="@+id/textView8"
         app:layout_constraintTop_toBottomOf="@+id/distanceInput" />
@@ -51,7 +50,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Selected aperture"
+        android:text="@string/selectedApertureTextView"
         android:textSize="18sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline9"
         app:layout_constraintTop_toBottomOf="@+id/textView7" />
@@ -61,7 +60,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:hint="ex: 1.5 for 1.5m"
+        android:hint="@string/distanceInput"
         app:layout_constraintEnd_toStartOf="@+id/guideline8"
         app:layout_constraintStart_toEndOf="@+id/textView7"
         app:layout_constraintTop_toBottomOf="@+id/circleOfConfusionInput" />
@@ -71,7 +70,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Distance to subject [m]"
+        android:text="@string/distanceTextView"
         android:textSize="18sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline9"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
@@ -95,7 +94,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="Circle of confusion [m]"
+        android:text="@string/COCTextView"
         android:textSize="18sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline9"
         app:layout_constraintTop_toTopOf="@+id/guideline7" />
@@ -105,7 +104,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="0.029"
+        android:text="@string/COCDefaultValue"
         app:layout_constraintEnd_toStartOf="@+id/guideline8"
         app:layout_constraintStart_toEndOf="@+id/textView3"
         app:layout_constraintTop_toTopOf="@+id/guideline7" />
@@ -128,18 +127,19 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/editButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Edit"
-        app:layout_constraintStart_toStartOf="@+id/guideline6"
+        android:text="@string/editButton"
+        app:layout_constraintEnd_toStartOf="@+id/deleteButton"
+        app:layout_constraintStart_toEndOf="@+id/backButton"
         app:layout_constraintTop_toTopOf="@+id/guideline11" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/deleteButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Delete"
+        android:text="@string/deleteButton"
         app:layout_constraintEnd_toStartOf="@+id/guideline8"
         app:layout_constraintTop_toTopOf="@+id/guideline11" />
 
@@ -162,7 +162,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="Hyperfocal Distance"
+        android:text="@string/hyperfocalDistanceTextView"
         android:textSize="18sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline9"
         app:layout_constraintTop_toBottomOf="@+id/textView11" />
@@ -172,7 +172,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.89" />
+        app:layout_constraintGuide_percent="0.7" />
 
     <TextView
         android:id="@+id/nearFocalPoint"
@@ -216,4 +216,13 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline8"
         app:layout_constraintStart_toStartOf="@+id/guideline9"
         app:layout_constraintTop_toBottomOf="@+id/depthOfField" />
+
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/backButton"
+        app:layout_constraintStart_toStartOf="@+id/guideline6"
+        app:layout_constraintTop_toTopOf="@+id/guideline11" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

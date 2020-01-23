@@ -1,6 +1,29 @@
 <resources>
+    <string name="title">Depth of Field Calculator</string>
+    <string name="lensDetailTitle">Lens Details</string>
+    <string name="calculateTitle">Calculate DOF</string>
     <string name="app_name">DOF_Calculator</string>
     <string name="select_a_lens_to_use">Select a lens to use:</string>
     <string name="camera_selected"> </string>
-    <string name="title">TEEMO</string>
+    <string name="apertureInput">ex: 2.8 for F2.8</string>
+    <string name="focalLengthInput">ex: 200 for 200mm</string>
+    <string name="apertureTextView">Aperture</string>
+    <string name="makeTextView">Make:</string>
+    <string name="focalLengthTextView">Focal Length [mm]</string>
+    <string name="makeInput">ex: Cannon</string>
+    <string name="cancelButton">Cancel</string>
+    <string name="saveButton">Save</string>
+    <string name="editButton">Edit</string>
+    <string name="deleteButton">Delete</string>
+    <string name="nearFocalPointTextView">Near Focal Point</string>
+    <string name="DOFTextView">Depth Of Field</string>
+    <string name="farFocalPointTextView">Far Focal Point</string>
+    <string name="selectedApertureInput">ex: 2.8 for F2.8</string>
+    <string name="selectedApertureTextView">Selected aperture</string>
+    <string name="distanceInput">ex: 1.5 for 1.5m</string>
+    <string name="distanceTextView">Distance to subject [m]</string>
+    <string name="COCTextView">Circle of confusion [m]</string>
+    <string name="COCDefaultValue">0.029</string>
+    <string name="hyperfocalDistanceTextView">Hyperfocal Distance</string>
+    <string name="backButton">Back</string>
 </resources>

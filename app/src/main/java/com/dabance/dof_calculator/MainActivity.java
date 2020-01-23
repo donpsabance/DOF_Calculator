@@ -20,6 +20,9 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private static final int ADD_REQUEST_CODE = 1;
+    private static final int EDIT_DELETE_REQUEST_CODE = 2;
+//    private static final int DELETE_REQUEST_CODE = 3;
+
     private LensManager lensManager = LensManager.getInstance();
 
     @Override
@@ -72,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
 
                 Intent intent = CalculationsActivity.makeIntent(MainActivity.this, position);
-                startActivity(intent);
+                startActivityForResult(intent, EDIT_DELETE_REQUEST_CODE);
 
             }
         });
@@ -82,12 +85,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == ADD_REQUEST_CODE){
+        if(requestCode == ADD_REQUEST_CODE || requestCode == EDIT_DELETE_REQUEST_CODE){
             if(resultCode == RESULT_OK){
 
                 showLens();
             }
         }
     }
-
 }

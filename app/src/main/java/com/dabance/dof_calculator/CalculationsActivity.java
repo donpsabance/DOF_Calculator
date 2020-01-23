@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,7 +24,9 @@ import java.text.DecimalFormat;
 
 public class CalculationsActivity extends AppCompatActivity {
 
-    private static final String SELECTED_LENS_INDEX = "com.dabance.dof_calculator.CalculationActivity - the lens index";
+    private static final String SELECTED_LENS_INDEX = "com.dabance.dof_calculator.CalculationActivity - lens index";
+    private static final int EDIT_REQUEST_CODE = 1;
+
     private LensManager lensManager = LensManager.getInstance();
 
     int selectedLens;
@@ -31,6 +35,41 @@ public class CalculationsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calculations);
+        setTitle(getString(R.string.calculateTitle));
+
+        Button deleteButton = findViewById(R.id.deleteButton);
+        Button editButton = findViewById(R.id.editButton);
+        Button backButton = findViewById(R.id.backButton);
+
+        editButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+
+                Intent intent = EditLensActivity.makeIntent(CalculationsActivity.this, selectedLens);
+                startActivityForResult(intent, EDIT_REQUEST_CODE);
+
+            }
+        });
+
+        deleteButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+
+                lensManager.getLensList().remove(selectedLens);
+                Toast.makeText(CalculationsActivity.this, "Successfully deleted lens!", Toast.LENGTH_SHORT).show();
+
+                Intent intent = getIntent();
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+        });
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         extractDataFromIntent();
         loadLensInfo(selectedLens);
@@ -73,6 +112,7 @@ public class CalculationsActivity extends AppCompatActivity {
         final DecimalFormat decimalFormat = new DecimalFormat("#.##");
         final Lens lens = lensManager.getLensList().get(selectedLens);
 
+        //used for near and far focal point and depth of field
         TextWatcher textWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -102,9 +142,9 @@ public class CalculationsActivity extends AppCompatActivity {
 
                 } else{
 
-                    nfp.setText("hey");
-                    ffp.setText("hey");
-                    dof.setText("hey");
+                    nfp.setText("");
+                    ffp.setText("");
+                    dof.setText("");
 
                 }
             }
@@ -119,6 +159,8 @@ public class CalculationsActivity extends AppCompatActivity {
 
         COC.addTextChangedListener(textWatcher);
         distance.addTextChangedListener(textWatcher);
+
+        //seperate because distance is not needed to calculate hyperfocal distance
         aperture.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -142,5 +184,23 @@ public class CalculationsActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+
+        //check if editing lens was successful, if it was, tell main screen that it was successful
+        //so it can update the lens list
+        if(requestCode == EDIT_REQUEST_CODE){
+            if(resultCode == RESULT_OK){
+
+                loadLensInfo(selectedLens);
+
+                Intent intent = getIntent();
+                setResult(RESULT_OK);
+
+            }
+        }
     }
 }

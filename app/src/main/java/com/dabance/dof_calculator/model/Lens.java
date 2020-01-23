@@ -18,12 +18,29 @@ public class Lens {
         this.focalLength = focalLength;
     }
 
+    public String getMake() {
+        return make;
+    }
+
+
     public double getMaxAperture() {
         return maxAperture;
     }
 
-    public double getFocalLength() {
+    public int getFocalLength() {
         return focalLength;
+    }
+
+    public void setMake(String make) {
+        this.make = make;
+    }
+
+    public void setMaxAperture(double maxAperture) {
+        this.maxAperture = maxAperture;
+    }
+
+    public void setFocalLength(int focalLength) {
+        this.focalLength = focalLength;
     }
 
     @Override

@@ -26,8 +26,7 @@ public class AddLensActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_lens);
-
-        setTitle("Lens Details");
+        setTitle(getString(R.string.lensDetailTitle));
 
         Button cancelButton = findViewById(R.id.cancelButton);
         Button saveButton = findViewById(R.id.saveButton);
@@ -74,10 +73,10 @@ public class AddLensActivity extends AppCompatActivity {
                     return true;
 
                 } else {
-                    aperture.setError("ERROR: Invalid aperture [MIN: 0]");
+                    aperture.setError("ERROR: Invalid aperture [MIN: 1.4]");
                 }
             } else {
-                focalLength.setError("ERROR: Invalid focal length [MIN: 1.4]");
+                focalLength.setError("ERROR: Invalid focal length [MIN: 1]");
             }
         } else{
             make.setError("ERROR: Missing name");
