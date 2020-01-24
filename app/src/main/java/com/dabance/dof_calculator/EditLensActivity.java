@@ -13,13 +13,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dabance.dof_calculator.model.Lens;
-import com.dabance.dof_calculator.model.LensManager;
 import com.dabance.dof_calculator.model.NumberManager;
 
 public class EditLensActivity extends AppCompatActivity {
 
     private static final String SELECTED_LENS_DATA = "com.dabance.dof_calculator.EditLensActivity - lens data";
-    private LensManager lensManager = LensManager.getInstance();
 
     String lensData;
 
