@@ -145,7 +145,7 @@ public class CalculationsActivity extends AppCompatActivity {
                     }
 
                     //calculate NFP, FFP, and DOF if it has distance and aperture filled out
-                    if (NumberManager.isIntegerInRange(distance.getText().toString(), 0, Integer.MAX_VALUE) &&
+                    if (NumberManager.isDoubleInRange(distance.getText().toString(), 0, Integer.MAX_VALUE) &&
                             NumberManager.isDoubleInRange(aperture.getText().toString(), lens.getMaxAperture(), Double.MAX_VALUE)) {
 
                         double nfpValue = DOF_Calculator.calculateNearFocalPoint(lens, Double.parseDouble(distance.getText().toString()), Double.parseDouble(aperture.getText().toString()));

@@ -12,6 +12,7 @@
         android:layout_width="0dp"
         android:layout_height="55dp"
         android:hint="@string/apertureInput"
+        android:inputType="numberDecimal"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
@@ -21,6 +22,7 @@
         android:layout_width="0dp"
         android:layout_height="55dp"
         android:hint="@string/focalLengthInput"
+        android:inputType="number"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
