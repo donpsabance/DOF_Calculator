@@ -68,13 +68,13 @@ public class AddLensActivity extends AppCompatActivity {
             if(NumberManager.isIntegerInRange(focalLength.getText().toString(), 1, Integer.MAX_VALUE)){
                 if(NumberManager.isDoubleInRange(aperture.getText().toString(), 1.4, Double.MAX_VALUE)){
 
+                    //save the lens data through SharePreference because there is no LensManager list
+                    //because we deleted it when we switched activities from MainActivity
                     Lens lens = new Lens(make.getText().toString(), Double.parseDouble(aperture.getText().toString()), Integer.parseInt(focalLength.getText().toString()));
                     SharedPreferences sharedPreferences = AddLensActivity.this.getSharedPreferences(getString(R.string.sharedPrefFile), Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
 
                     editor.putInt(lens.getInfo(), 1).apply();
-
-//                    lensManager.addLens(lens);
 
                     Toast.makeText(AddLensActivity.this, "Successfully added lens!", Toast.LENGTH_SHORT).show();
                     return true;
@@ -90,18 +90,4 @@ public class AddLensActivity extends AppCompatActivity {
         }
         return false;
     }
-
-    private void extractLensInfo(String list){
-
-        String[] listValues = list.split(",");
-
-        String make = listValues[0];
-        double aperture = Double.parseDouble(listValues[1]);
-        int focal = Integer.parseInt(listValues[2]);
-
-        Lens lens = new Lens(make, aperture, focal);
-        lensManager.addLens(lens);
-
-    }
-
 }

@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -17,11 +16,6 @@ import android.widget.Toast;
 import com.dabance.dof_calculator.model.Lens;
 import com.dabance.dof_calculator.model.LensManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import org.w3c.dom.Text;
-
-import java.text.DecimalFormat;
-import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
@@ -36,13 +30,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         loadSavedLens();
         loadDefaultLens();
         showLens();
         registerClickFeedback();
 
-        //load all lenses from SharedPreference
 
         FloatingActionButton fab = findViewById(R.id.addLensButton);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -61,9 +53,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop(){
         super.onStop();
 
-        //save to file
-        //clear lensManager
-
+        //When program closes, or switches activity, everything from LensManager is saved onto SharedPreference file
         SharedPreferences sharedPreferences = MainActivity.this.getSharedPreferences(getString(R.string.sharedPrefFile), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
@@ -78,8 +68,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart(){
         super.onStart();
 
-        //clear file
-        //save to manager
+        //load everything from SharedPreference onto LensManager, this usually happens on startup or coming back from
+        //another activity, LensManager list is used for displaying list of lenses and gets deleted and reloaded after
         loadSavedLens();
         showLens();
     }
@@ -151,11 +141,14 @@ public class MainActivity extends AppCompatActivity {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
                 TextView tv = (TextView) view;
                 String message = "You have selected lens: " + ((TextView) view).getText().toString();
                 Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
 
-                Intent intent = CalculationsActivity.makeIntent(MainActivity.this, position, lensManager.getLensList().get(position).getInfo());
+                //need to send raw data because lensManager list won't be able after switching activity
+                //because SharedPreference will be used instead
+                Intent intent = CalculationsActivity.makeIntent(MainActivity.this, lensManager.getLensList().get(position).getInfo());
                 startActivityForResult(intent, EDIT_DELETE_REQUEST_CODE);
 
             }

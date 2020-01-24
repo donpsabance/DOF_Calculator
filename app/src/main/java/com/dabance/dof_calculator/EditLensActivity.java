@@ -44,6 +44,7 @@ public class EditLensActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(saveLensData()){
 
+                    //send back the new len's data that was just edited back to Calculations so the new information can be show
                     Intent intent = new Intent();
                     intent.putExtra(SELECTED_LENS_DATA, lensData);
                     setResult(RESULT_OK, intent);
@@ -94,6 +95,9 @@ public class EditLensActivity extends AppCompatActivity {
             if(NumberManager.isIntegerInRange(focalLength.getText().toString(), 1, Integer.MAX_VALUE)){
                 if(NumberManager.isDoubleInRange(aperture.getText().toString(), 1.4, Double.MAX_VALUE)){
 
+                    //save the lens data through SharePreference because there is no LensManager list
+                    //because we deleted it when we switched activities from MainActivity
+                    //first delete the old lens, then save the new lens to SharedPreference
                     Lens newLens = new Lens(make.getText().toString(), Double.parseDouble(aperture.getText().toString()), Integer.parseInt(focalLength.getText().toString()));
                     SharedPreferences sharedPreferences = EditLensActivity.this.getSharedPreferences(getString(R.string.sharedPrefFile), Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();

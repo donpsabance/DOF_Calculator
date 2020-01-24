@@ -8,7 +8,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,21 +19,14 @@ import com.dabance.dof_calculator.model.Lens;
 import com.dabance.dof_calculator.model.LensManager;
 import com.dabance.dof_calculator.model.NumberManager;
 
-import org.w3c.dom.Text;
-
 import java.text.DecimalFormat;
 
 public class CalculationsActivity extends AppCompatActivity {
 
-    private static final String SELECTED_LENS_INDEX = "com.dabance.dof_calculator.CalculationActivity - lens index";
     private static final String SELECTED_LENS_DATA = "com.dabance.dof_calculator.CalculationActivity - lens data";
     private static final String SELECTED_LENS_DATA_FROM_EDIT = "com.dabance.dof_calculator.EditLensActivity - lens data";
     private static final int EDIT_REQUEST_CODE = 1;
-//    private static final int DELETE_REQUEST_CODE = 2;
 
-    private LensManager lensManager = LensManager.getInstance();
-
-    int selectedLens;
     String lensData;
 
     @Override
@@ -63,7 +55,6 @@ public class CalculationsActivity extends AppCompatActivity {
 
                 SharedPreferences sharedPreferences = CalculationsActivity.this.getSharedPreferences(getString(R.string.sharedPrefFile), Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
-//
                 editor.remove(lensData).apply();
 
                 Toast.makeText(CalculationsActivity.this, "Successfully deleted lens!", Toast.LENGTH_SHORT).show();
@@ -82,32 +73,24 @@ public class CalculationsActivity extends AppCompatActivity {
         });
 
         extractDataFromIntent();
-        loadLensInfo(selectedLens);
+        loadLensInfoThroughData(lensData);
         calculateData();
 
     }
 
     private void extractDataFromIntent() {
         Intent intent = getIntent();
-        selectedLens = intent.getIntExtra(SELECTED_LENS_INDEX, 0);
         lensData = intent.getStringExtra(SELECTED_LENS_DATA);
     }
 
 
-    public static Intent makeIntent(Context context, int lensIndex, String lensData){
+    public static Intent makeIntent(Context context, String lensData){
         Intent intent = new Intent(context, CalculationsActivity.class);
-        intent.putExtra(SELECTED_LENS_INDEX, lensIndex);
         intent.putExtra(SELECTED_LENS_DATA, lensData);
         return intent;
     }
 
-    private void loadLensInfo(int lensIndex){
-
-        TextView tv = findViewById(R.id.selectedCamera);
-        tv.setText("Selected lens: " + lensManager.getLensList().get(lensIndex));
-
-    }
-
+    //used when receiving data because there is no LensManager list to retrieve lenses
     private void loadLensInfoThroughData(String lensData){
 
         TextView tv = findViewById(R.id.selectedCamera);
@@ -132,8 +115,10 @@ public class CalculationsActivity extends AppCompatActivity {
         final TextView hfd = findViewById(R.id.hyperfocalDistance);
 
         final DecimalFormat decimalFormat = new DecimalFormat("#.##");
-        final Lens lens = lensManager.getLensList().get(selectedLens);
 
+        String[] listValues = lensData.split(",");
+        final Lens lens = new Lens(listValues[0], Double.parseDouble(listValues[1]), Integer.parseInt(listValues[2]));
+//        final Lens lens = new Lens("Cannon", 2.2, 400);
         //used for near and far focal point and depth of field
         TextWatcher textWatcher = new TextWatcher() {
             @Override
