@@ -1,8 +1,12 @@
 <resources>
-    <string name="title">Depth of Field Calculator</string>
+    <string name="app_name">Depth of Field Calculator</string>
+    <string name="sharedPrefFile">sharedPrefFile</string>
+    <string name="lensMakeList">lensMakeList</string>
+    <string name="lensApertureList">lensApertureList</string>
+    <string name="lensFocalList">lensFocalList</string>
     <string name="lensDetailTitle">Lens Details</string>
     <string name="calculateTitle">Calculate DOF</string>
-    <string name="app_name">DOF_Calculator</string>
+    <string name="emptyLensList">The current list of lenses is empty.\nTo add a lens, click the + button to get started</string>
     <string name="select_a_lens_to_use">Select a lens to use:</string>
     <string name="camera_selected"> </string>
     <string name="apertureInput">ex: 2.8 for F2.8</string>
@@ -26,4 +30,5 @@
     <string name="COCDefaultValue">0.029</string>
     <string name="hyperfocalDistanceTextView">Hyperfocal Distance</string>
     <string name="backButton">Back</string>
+    <string name="featuresList">Optional feautures:  3.1) Error checking inputs 3.2) Edit and Delete Lens</string>
 </resources>

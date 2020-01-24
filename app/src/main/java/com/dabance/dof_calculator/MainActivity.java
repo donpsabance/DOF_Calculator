@@ -2,7 +2,9 @@ package com.dabance.dof_calculator;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,13 +17,15 @@ import com.dabance.dof_calculator.model.Lens;
 import com.dabance.dof_calculator.model.LensManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import org.w3c.dom.Text;
+
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final int ADD_REQUEST_CODE = 1;
     private static final int EDIT_DELETE_REQUEST_CODE = 2;
-//    private static final int DELETE_REQUEST_CODE = 3;
 
     private LensManager lensManager = LensManager.getInstance();
 
@@ -30,10 +34,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        loadLens();
+        loadSavedLens();
         showLens();
         registerClickFeedback();
-        setTitle(getString(R.string.title));
 
         FloatingActionButton fab = findViewById(R.id.addLensButton);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -42,26 +45,52 @@ public class MainActivity extends AppCompatActivity {
 
                 Intent intent = AddLensActivity.makeIntent(MainActivity.this);
                 startActivityForResult(intent, ADD_REQUEST_CODE);
+
             }
         });
 
     }
 
-    private void loadLens(){
+    private void loadSavedLens(){
 
-        lensManager.addLens(new Lens("Canon", 1.8, 50));
-        lensManager.addLens(new Lens("Tamron", 2.8, 90));
-        lensManager.addLens(new Lens("Sigma", 2.8, 200));
-        lensManager.addLens(new Lens("Nikon", 4, 200));
+        SharedPreferences sharedPreferences = MainActivity.this.getSharedPreferences(getString(R.string.sharedPrefFile), Context.MODE_PRIVATE);
+        String make = sharedPreferences.getString(getString(R.string.lensMakeList), "");
+        int focal = sharedPreferences.getInt(getString(R.string.lensFocalList), 0);
+        double aperture = Double.longBitsToDouble(sharedPreferences.getLong(getString(R.string.lensApertureList), Double.doubleToLongBits(1.4)));
+        lensManager.addLens(new Lens(make, aperture, focal));
 
     }
 
+//    private void loadLens(){
+//
+//        lensManager.addLens(new Lens("Canon", 1.8, 50));
+//        lensManager.addLens(new Lens("Tamron", 2.8, 90));
+//        lensManager.addLens(new Lens("Sigma", 2.8, 200));
+//        lensManager.addLens(new Lens("Nikon", 4, 200));
+//
+//    }
+
     private void showLens(){
 
-        ArrayAdapter<Lens> adapter = new ArrayAdapter<>(this, R.layout.lenslayout, lensManager.getLensList());
-        ListView lv = findViewById(R.id.lensListView);
-        lv.setAdapter(adapter);
+        if(!lensManager.getLensList().isEmpty()){
 
+            TextView tv = findViewById(R.id.emptyLensTextView);
+            tv.setVisibility(View.INVISIBLE);
+
+            ArrayAdapter<Lens> adapter = new ArrayAdapter<>(this, R.layout.lenslayout, lensManager.getLensList());
+            ListView lv = findViewById(R.id.lensListView);
+            lv.setAdapter(adapter);
+            lv.setVisibility(View.VISIBLE);
+
+        } else {
+
+            ListView lv = findViewById(R.id.lensListView);
+            lv.setVisibility(View.INVISIBLE);
+
+            TextView tv = findViewById(R.id.emptyLensTextView);
+            tv.setVisibility(View.VISIBLE);
+
+        }
     }
 
     private void registerClickFeedback(){

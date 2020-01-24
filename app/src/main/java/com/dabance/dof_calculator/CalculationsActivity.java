@@ -26,6 +26,7 @@ public class CalculationsActivity extends AppCompatActivity {
 
     private static final String SELECTED_LENS_INDEX = "com.dabance.dof_calculator.CalculationActivity - lens index";
     private static final int EDIT_REQUEST_CODE = 1;
+//    private static final int DELETE_REQUEST_CODE = 2;
 
     private LensManager lensManager = LensManager.getInstance();
 
@@ -122,38 +123,32 @@ public class CalculationsActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                //Near and far local point and depth of field
-                if(NumberManager.isDoubleInRange(s.toString(), 0.0, Double.MAX_VALUE) &&
-                        (NumberManager.isDoubleInRange(s.toString(), lens.getMaxAperture(), Double.MAX_VALUE))){
 
-
-                    double nfpValue = Double.parseDouble(decimalFormat.format(DOF_Calculator.calculateNearFocalPoint(lens,
-                            Double.parseDouble(distance.getText().toString()), Double.parseDouble(aperture.getText().toString()))));
-
-                    double ffpValue = Double.parseDouble(decimalFormat.format(DOF_Calculator.calculateFarFocalPoint(lens,
-                            Double.parseDouble(distance.getText().toString()), Double.parseDouble(aperture.getText().toString()))));
-
-                    double dofValue = Double.parseDouble(decimalFormat.format(DOF_Calculator.calculateDOF(lens,
-                            Double.parseDouble(distance.getText().toString()), Double.parseDouble(aperture.getText().toString()))));
-
-                    nfp.setText(Double.toString(nfpValue));
-                    ffp.setText(Double.toString(ffpValue));
-                    dof.setText(Double.toString(dofValue));
-
-                } else{
-
-                    nfp.setText("");
-                    ffp.setText("");
-                    dof.setText("");
-
-                }
             }
 
 
             @Override
             public void afterTextChanged(Editable s) {
 
+                if(NumberManager.isIntegerInRange(s.toString(), 0, Integer.MAX_VALUE) &&
+                    NumberManager.isDoubleInRange(aperture.getText().toString(), 1.4, Double.MAX_VALUE)) {
 
+                    double nfpValue = DOF_Calculator.calculateNearFocalPoint(lens, Double.parseDouble(distance.getText().toString()), Double.parseDouble(aperture.getText().toString()));
+                    double ffpValue = DOF_Calculator.calculateFarFocalPoint(lens, Double.parseDouble(distance.getText().toString()), Double.parseDouble(aperture.getText().toString()));
+                    double dofValue = DOF_Calculator.calculateDOF(lens, Double.parseDouble(distance.getText().toString()), Double.parseDouble(aperture.getText().toString()));
+
+                    dof.setText((decimalFormat.format(dofValue) + " m"));
+                    ffp.setText((decimalFormat.format(ffpValue) + " m"));
+                    nfp.setText((decimalFormat.format(nfpValue) + " m"));
+
+
+                } else {
+
+                    nfp.setText("");
+                    ffp.setText("");
+                    dof.setText("");
+
+                }
             }
         };
 
@@ -170,18 +165,18 @@ public class CalculationsActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                if(NumberManager.isDoubleInRange(s.toString(), lens.getMaxAperture(), Double.MAX_VALUE)) {
-
-                        double hfdValue = Double.parseDouble(decimalFormat.format(DOF_Calculator.calculateHyperfocalDistance(lens,
-                                Double.parseDouble(s.toString())) / 1000));
-
-                        hfd.setText(Double.toString(hfdValue));
-                }
             }
 
             @Override
             public void afterTextChanged(Editable s) {
 
+                if(NumberManager.isDoubleInRange(s.toString(), lens.getMaxAperture(), Double.MAX_VALUE)) {
+
+                    double hfdValue = DOF_Calculator.calculateHyperfocalDistance(lens,
+                            Double.parseDouble(s.toString())) / 1000;
+
+                    hfd.setText((decimalFormat.format(hfdValue) + " m"));
+                }
             }
         });
     }
