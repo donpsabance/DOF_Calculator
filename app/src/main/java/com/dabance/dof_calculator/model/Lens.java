@@ -43,6 +43,10 @@ public class Lens {
         this.focalLength = focalLength;
     }
 
+    public String getInfo(){
+        return make + "," + Double.toString(maxAperture) + "," + Integer.toString(focalLength);
+    }
+
     @Override
     public String toString() {
         return make + " " + focalLength + "mm F" + maxAperture;

@@ -1,9 +1,6 @@
 <resources>
     <string name="app_name">Depth of Field Calculator</string>
     <string name="sharedPrefFile">sharedPrefFile</string>
-    <string name="lensMakeList">lensMakeList</string>
-    <string name="lensApertureList">lensApertureList</string>
-    <string name="lensFocalList">lensFocalList</string>
     <string name="lensDetailTitle">Lens Details</string>
     <string name="calculateTitle">Calculate DOF</string>
     <string name="emptyLensList">The current list of lenses is empty.\nTo add a lens, click the + button to get started</string>

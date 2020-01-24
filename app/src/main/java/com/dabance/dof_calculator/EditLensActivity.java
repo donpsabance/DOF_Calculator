@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -17,10 +18,10 @@ import com.dabance.dof_calculator.model.NumberManager;
 
 public class EditLensActivity extends AppCompatActivity {
 
-    private static final String SELECTED_LENS_INDEX = "com.dabance.dof_calculator.EditLensActivity - lens index";
+    private static final String SELECTED_LENS_DATA = "com.dabance.dof_calculator.EditLensActivity - lens data";
     private LensManager lensManager = LensManager.getInstance();
 
-    int selectedLens;
+    String lensData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +44,9 @@ public class EditLensActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(saveLensData()){
 
-                    Intent intent = getIntent();
-                    setResult(RESULT_OK);
+                    Intent intent = new Intent();
+                    intent.putExtra(SELECTED_LENS_DATA, lensData);
+                    setResult(RESULT_OK, intent);
                     finish();
 
                 } else {
@@ -53,12 +55,18 @@ public class EditLensActivity extends AppCompatActivity {
             }
         });
 
+        extractDataFromIntent();
         loadLensInfo();
     }
 
-    public static Intent makeIntent(Context context, int lensIndex){
+    private void extractDataFromIntent() {
+        Intent intent = getIntent();
+        lensData = intent.getStringExtra(SELECTED_LENS_DATA);
+    }
+
+    public static Intent makeIntent(Context context, String lensData){
         Intent intent = new Intent(context, EditLensActivity.class);
-        intent.putExtra(SELECTED_LENS_INDEX, lensIndex);
+        intent.putExtra(SELECTED_LENS_DATA, lensData);
         return intent;
     }
 
@@ -68,17 +76,15 @@ public class EditLensActivity extends AppCompatActivity {
         TextView focal = findViewById(R.id.editFocalLengthInput);
         TextView aperture = findViewById(R.id.editApertureInput);
 
-        Lens lens = lensManager.getLensList().get(selectedLens);
+        String[] listValues = lensData.split(",");
 
-        make.setText(lens.getMake());
-        focal.setText(Integer.toString(lens.getFocalLength()));
-        aperture.setText(Double.toString(lens.getMaxAperture()));
+        make.setText(listValues[0]);
+        aperture.setText(listValues[1]);
+        focal.setText(listValues[2]);
 
     }
 
     private boolean saveLensData(){
-
-        Lens lens = lensManager.getLensList().get(selectedLens);
 
         EditText make = findViewById(R.id.editMakeInput);
         EditText focalLength = findViewById(R.id.editFocalLengthInput);
@@ -88,9 +94,14 @@ public class EditLensActivity extends AppCompatActivity {
             if(NumberManager.isIntegerInRange(focalLength.getText().toString(), 1, Integer.MAX_VALUE)){
                 if(NumberManager.isDoubleInRange(aperture.getText().toString(), 1.4, Double.MAX_VALUE)){
 
-                    lens.setMake(make.getText().toString());
-                    lens.setFocalLength(Integer.parseInt(focalLength.getText().toString()));
-                    lens.setMaxAperture(Double.parseDouble(aperture.getText().toString()));
+                    Lens newLens = new Lens(make.getText().toString(), Double.parseDouble(aperture.getText().toString()), Integer.parseInt(focalLength.getText().toString()));
+                    SharedPreferences sharedPreferences = EditLensActivity.this.getSharedPreferences(getString(R.string.sharedPrefFile), Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                    editor.remove(lensData).apply();
+                    editor.putInt(newLens.getInfo(), 1).apply();
+
+                    lensData = newLens.getInfo();
 
                     Toast.makeText(EditLensActivity.this, "Successfully edited lens!", Toast.LENGTH_SHORT).show();
                     return true;

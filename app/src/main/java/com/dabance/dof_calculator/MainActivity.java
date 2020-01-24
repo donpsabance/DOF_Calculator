@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -21,6 +22,7 @@ import org.w3c.dom.Text;
 
 import java.text.DecimalFormat;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,9 +36,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         loadSavedLens();
+        loadDefaultLens();
         showLens();
         registerClickFeedback();
+
+        //load all lenses from SharedPreference
 
         FloatingActionButton fab = findViewById(R.id.addLensButton);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -51,24 +57,70 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onStop(){
+        super.onStop();
+
+        //save to file
+        //clear lensManager
+
+        SharedPreferences sharedPreferences = MainActivity.this.getSharedPreferences(getString(R.string.sharedPrefFile), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        for(int i = 0; i < lensManager.getLensList().size(); i++){
+            editor.putInt(lensManager.getLensList().get(i).getInfo(), 1);
+            editor.apply();
+        }
+        lensManager.getLensList().clear();
+    }
+
+    @Override
+    protected void onStart(){
+        super.onStart();
+
+        //clear file
+        //save to manager
+        loadSavedLens();
+        showLens();
+    }
+
     private void loadSavedLens(){
 
         SharedPreferences sharedPreferences = MainActivity.this.getSharedPreferences(getString(R.string.sharedPrefFile), Context.MODE_PRIVATE);
-        String make = sharedPreferences.getString(getString(R.string.lensMakeList), "");
-        int focal = sharedPreferences.getInt(getString(R.string.lensFocalList), 0);
-        double aperture = Double.longBitsToDouble(sharedPreferences.getLong(getString(R.string.lensApertureList), Double.doubleToLongBits(1.4)));
-        lensManager.addLens(new Lens(make, aperture, focal));
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Map<String, ?> lensList = sharedPreferences.getAll();
+
+        //read the key's only
+        for(String key : lensList.keySet()){
+            extractLensInfo(key);
+        }
+        editor.clear().apply();
+    }
+
+    private void extractLensInfo(String list){
+
+        String[] listValues = list.split(",");
+
+        String make = listValues[0];
+        double aperture = Double.parseDouble(listValues[1]);
+        int focal = Integer.parseInt(listValues[2]);
+
+        Lens lens = new Lens(make, aperture, focal);
+        lensManager.addLens(lens);
 
     }
 
-//    private void loadLens(){
-//
-//        lensManager.addLens(new Lens("Canon", 1.8, 50));
-//        lensManager.addLens(new Lens("Tamron", 2.8, 90));
-//        lensManager.addLens(new Lens("Sigma", 2.8, 200));
-//        lensManager.addLens(new Lens("Nikon", 4, 200));
-//
-//    }
+    private void loadDefaultLens() {
+
+        if (lensManager.getLensList().size() == 0) {
+
+            lensManager.addLens(new Lens("Canon", 1.8, 50));
+            lensManager.addLens(new Lens("Tamron", 2.8, 90));
+            lensManager.addLens(new Lens("Sigma", 2.8, 200));
+            lensManager.addLens(new Lens("Nikon", 4, 200));
+
+        }
+    }
 
     private void showLens(){
 
@@ -103,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
                 String message = "You have selected lens: " + ((TextView) view).getText().toString();
                 Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
 
-                Intent intent = CalculationsActivity.makeIntent(MainActivity.this, position);
+                Intent intent = CalculationsActivity.makeIntent(MainActivity.this, position, lensManager.getLensList().get(position).getInfo());
                 startActivityForResult(intent, EDIT_DELETE_REQUEST_CODE);
 
             }

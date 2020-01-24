@@ -4,9 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,12 +27,15 @@ import java.text.DecimalFormat;
 public class CalculationsActivity extends AppCompatActivity {
 
     private static final String SELECTED_LENS_INDEX = "com.dabance.dof_calculator.CalculationActivity - lens index";
+    private static final String SELECTED_LENS_DATA = "com.dabance.dof_calculator.CalculationActivity - lens data";
+    private static final String SELECTED_LENS_DATA_FROM_EDIT = "com.dabance.dof_calculator.EditLensActivity - lens data";
     private static final int EDIT_REQUEST_CODE = 1;
 //    private static final int DELETE_REQUEST_CODE = 2;
 
     private LensManager lensManager = LensManager.getInstance();
 
     int selectedLens;
+    String lensData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +51,7 @@ public class CalculationsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view){
 
-                Intent intent = EditLensActivity.makeIntent(CalculationsActivity.this, selectedLens);
+                Intent intent = EditLensActivity.makeIntent(CalculationsActivity.this, lensData);
                 startActivityForResult(intent, EDIT_REQUEST_CODE);
 
             }
@@ -56,7 +61,11 @@ public class CalculationsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view){
 
-                lensManager.getLensList().remove(selectedLens);
+                SharedPreferences sharedPreferences = CalculationsActivity.this.getSharedPreferences(getString(R.string.sharedPrefFile), Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+//
+                editor.remove(lensData).apply();
+
                 Toast.makeText(CalculationsActivity.this, "Successfully deleted lens!", Toast.LENGTH_SHORT).show();
 
                 Intent intent = getIntent();
@@ -81,12 +90,14 @@ public class CalculationsActivity extends AppCompatActivity {
     private void extractDataFromIntent() {
         Intent intent = getIntent();
         selectedLens = intent.getIntExtra(SELECTED_LENS_INDEX, 0);
+        lensData = intent.getStringExtra(SELECTED_LENS_DATA);
     }
 
 
-    public static Intent makeIntent(Context context, int lensIndex){
+    public static Intent makeIntent(Context context, int lensIndex, String lensData){
         Intent intent = new Intent(context, CalculationsActivity.class);
         intent.putExtra(SELECTED_LENS_INDEX, lensIndex);
+        intent.putExtra(SELECTED_LENS_DATA, lensData);
         return intent;
     }
 
@@ -96,6 +107,16 @@ public class CalculationsActivity extends AppCompatActivity {
         tv.setText("Selected lens: " + lensManager.getLensList().get(lensIndex));
 
     }
+
+    private void loadLensInfoThroughData(String lensData){
+
+        TextView tv = findViewById(R.id.selectedCamera);
+        String[] listValues = lensData.split(",");
+        String message = "Selected lens: " + listValues[0] + " " + listValues[2] + "mm F" + listValues[1];
+        tv.setText(message);
+
+    }
+
 
     private void calculateData() {
 
@@ -190,9 +211,9 @@ public class CalculationsActivity extends AppCompatActivity {
         if(requestCode == EDIT_REQUEST_CODE){
             if(resultCode == RESULT_OK){
 
-                loadLensInfo(selectedLens);
+                lensData = data.getStringExtra(SELECTED_LENS_DATA_FROM_EDIT);
+                loadLensInfoThroughData(lensData);
 
-                Intent intent = getIntent();
                 setResult(RESULT_OK);
 
             }

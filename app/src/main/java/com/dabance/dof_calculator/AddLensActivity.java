@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,6 +15,8 @@ import android.widget.Toast;
 import com.dabance.dof_calculator.model.Lens;
 import com.dabance.dof_calculator.model.LensManager;
 import com.dabance.dof_calculator.model.NumberManager;
+
+import java.util.Map;
 
 public class AddLensActivity extends AppCompatActivity {
 
@@ -65,17 +68,13 @@ public class AddLensActivity extends AppCompatActivity {
             if(NumberManager.isIntegerInRange(focalLength.getText().toString(), 1, Integer.MAX_VALUE)){
                 if(NumberManager.isDoubleInRange(aperture.getText().toString(), 1.4, Double.MAX_VALUE)){
 
+                    Lens lens = new Lens(make.getText().toString(), Double.parseDouble(aperture.getText().toString()), Integer.parseInt(focalLength.getText().toString()));
                     SharedPreferences sharedPreferences = AddLensActivity.this.getSharedPreferences(getString(R.string.sharedPrefFile), Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
 
-                    editor.putString(getString(R.string.lensMakeList), make.getText().toString());
-                    editor.putInt(getString(R.string.lensFocalList), Integer.parseInt(focalLength.getText().toString()));
-                    editor.putLong(getString(R.string.lensApertureList), Double.doubleToRawLongBits(Double.parseDouble(aperture.getText().toString())));
-                    editor.apply();
+                    editor.putInt(lens.getInfo(), 1).apply();
 
-                    lensManager.addLens(new Lens(make.getText().toString(),
-                            Double.parseDouble(aperture.getText().toString()),
-                            Integer.parseInt(focalLength.getText().toString())));
+//                    lensManager.addLens(lens);
 
                     Toast.makeText(AddLensActivity.this, "Successfully added lens!", Toast.LENGTH_SHORT).show();
                     return true;
@@ -91,4 +90,18 @@ public class AddLensActivity extends AppCompatActivity {
         }
         return false;
     }
+
+    private void extractLensInfo(String list){
+
+        String[] listValues = list.split(",");
+
+        String make = listValues[0];
+        double aperture = Double.parseDouble(listValues[1]);
+        int focal = Integer.parseInt(listValues[2]);
+
+        Lens lens = new Lens(make, aperture, focal);
+        lensManager.addLens(lens);
+
+    }
+
 }
