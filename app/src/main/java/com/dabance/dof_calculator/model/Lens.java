@@ -5,23 +5,18 @@ public class Lens {
     private String make;
     private double maxAperture;
     private int focalLength;
+    private int imageId;
 
-    public Lens() {
-        this.make = "n/a";
-        this.maxAperture = 0.0;
-        this.focalLength = 0;
-    }
-
-    public Lens(String make, double maxAperture, int focalLength) {
+    public Lens(String make, double maxAperture, int focalLength, int imageId) {
         this.make = make;
         this.maxAperture = maxAperture;
         this.focalLength = focalLength;
+        this.imageId = imageId;
     }
 
     public String getMake() {
         return make;
     }
-
 
     public double getMaxAperture() {
         return maxAperture;
@@ -43,8 +38,12 @@ public class Lens {
         this.focalLength = focalLength;
     }
 
+    public int getImageId() {
+        return imageId;
+    }
+
     public String getInfo(){
-        return make + "," + Double.toString(maxAperture) + "," + Integer.toString(focalLength);
+        return make + "," + Double.toString(maxAperture) + "," + Integer.toString(focalLength) + "," + imageId;
     }
 
     @Override

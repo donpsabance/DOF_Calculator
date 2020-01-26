@@ -28,4 +28,5 @@
     <string name="hyperfocalDistanceTextView">Hyperfocal Distance</string>
     <string name="backButton">Back</string>
     <string name="featuresList">Optional feautures:  3.1) Error checking inputs 3.2) Edit and Delete Lens</string>
+    <string name="image_icon">Image Icon</string>
 </resources>

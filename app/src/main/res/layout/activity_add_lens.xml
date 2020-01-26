@@ -7,6 +7,24 @@
     app:errorEnabled="true"
     tools:context=".AddLensActivity">
 
+    <Spinner
+        android:id="@+id/imageSpinnerAdd"
+        android:layout_width="0dp"
+        android:layout_height="51dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/textView13" />
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/image_icon"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/apertureInput" />
+
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/apertureInput"
         android:layout_width="0dp"
@@ -107,6 +125,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.60" />
+        app:layout_constraintGuide_percent="0.84" />
+
+    <ImageView
+        android:id="@+id/iconPreviewAddLens"
+        android:layout_width="48dp"
+        android:layout_height="52dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline12"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/imageSpinnerAdd"
+        app:srcCompat="@drawable/icon1" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

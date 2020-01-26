@@ -116,7 +116,7 @@ public class CalculationsActivity extends AppCompatActivity {
         final DecimalFormat decimalFormat = new DecimalFormat("#.##");
 
         String[] listValues = lensData.split(",");
-        final Lens lens = new Lens(listValues[0], Double.parseDouble(listValues[1]), Integer.parseInt(listValues[2]));
+        final Lens lens = new Lens(listValues[0], Double.parseDouble(listValues[1]), Integer.parseInt(listValues[2]), Integer.parseInt(listValues[3]));
 
         TextWatcher textWatcher = new TextWatcher() {
             @Override
@@ -129,11 +129,12 @@ public class CalculationsActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
 
                 //make sure string is not empty so when we try to parse it, we dont crash the program
+
                 if (!s.toString().trim().equals("")) {
 
                     //calculates the aperture even though there is no distance filled as distance is not taken into
                     //account when calculating
-                    if (NumberManager.isDoubleInRange(aperture.getText().toString(), lens.getMaxAperture(), Double.MAX_VALUE)) {
+                    if (NumberManager.isDoubleInRange(aperture.getText().toString(), lens.getMaxAperture(), Double.MAX_VALUE)){
 
                         double hfdValue = DOF_Calculator.calculateHyperfocalDistance(lens,
                                 Double.parseDouble(s.toString())) / 1000;
@@ -169,6 +170,10 @@ public class CalculationsActivity extends AppCompatActivity {
                     nfp.setText("");
                     ffp.setText("");
                     dof.setText("");
+
+                    if(aperture.getText().toString().equals("")){
+                        hfd.setText("");
+                    }
 
                 }
             }
