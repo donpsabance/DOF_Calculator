@@ -50,8 +50,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent intent = AddLensActivity.makeIntent(MainActivity.this);
-                startActivityForResult(intent, ADD_REQUEST_CODE);
+                Intent intent = AddLensActivity.makeIntent(MainActivity.this, "");
+                startActivityForResult(intent, EDIT_DELETE_REQUEST_CODE);
 
             }
         });
@@ -67,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         for(int i = 0; i < lensManager.getLensList().size(); i++){
-            Log.wtf("NOOO", lensManager.getLensList().get(i).toString());
             editor.putInt(lensManager.getLensList().get(i).getInfo(), LENS_INFO_DATA);
             editor.apply();
         }

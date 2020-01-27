@@ -23,7 +23,7 @@ import java.text.DecimalFormat;
 public class CalculationsActivity extends AppCompatActivity {
 
     private static final String SELECTED_LENS_DATA = "com.dabance.dof_calculator.CalculationActivity - lens data";
-    private static final String SELECTED_LENS_DATA_FROM_EDIT = "com.dabance.dof_calculator.EditLensActivity - lens data";
+    private static final String SELECTED_LENS_DATA_FROM_EDIT = "com.dabance.dof_calculator.AddLensActivity - lens data";
     private static final int EDIT_REQUEST_CODE = 1;
 
     String lensData;
@@ -42,7 +42,8 @@ public class CalculationsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view){
 
-                Intent intent = EditLensActivity.makeIntent(CalculationsActivity.this, lensData);
+//                Intent intent = EditLensActivity.makeIntent(CalculationsActivity.this, lensData);
+                Intent intent = AddLensActivity.makeIntent(CalculationsActivity.this, lensData);
                 startActivityForResult(intent, EDIT_REQUEST_CODE);
 
             }

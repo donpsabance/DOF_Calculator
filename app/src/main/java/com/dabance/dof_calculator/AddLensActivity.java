@@ -13,17 +13,30 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dabance.dof_calculator.model.Lens;
 import com.dabance.dof_calculator.model.NumberManager;
 
+import java.util.Arrays;
+
 public class AddLensActivity extends AppCompatActivity  implements AdapterView.OnItemSelectedListener {
 
+    private static final String SELECTED_LENS_DATA = "com.dabance.dof_calculator.AddLensActivity - lens data";
     private static final int LENS_INFO_DATA = 0;
+    private String lensData;
 
-    public static Intent makeIntent(Context context){
-        return new Intent(context, AddLensActivity.class);
+    public static Intent makeIntent(Context context, String lensData ){
+
+        Intent intent = new Intent(context, AddLensActivity.class);
+        intent.putExtra(SELECTED_LENS_DATA, lensData);
+        return intent;
+    }
+
+    private void extractDataFromIntent() {
+        Intent intent = getIntent();
+        lensData = intent.getStringExtra(SELECTED_LENS_DATA);
     }
 
     @Override
@@ -48,16 +61,23 @@ public class AddLensActivity extends AppCompatActivity  implements AdapterView.O
                 if(saveLensData()){
 
                     Intent intent = getIntent();
+                    intent.putExtra(SELECTED_LENS_DATA, lensData);
                     setResult(RESULT_OK, intent);
-
                     finish();
+
                 } else {
                     Toast.makeText(AddLensActivity.this, "Invalid lens, try again", Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
+        extractDataFromIntent();
         loadSpinner();
+
+        //only load lens data if there is a lens being edited
+        if(!lensData.equals("")){
+            loadLensInfo();
+        }
     }
 
     private void loadSpinner() {
@@ -81,6 +101,28 @@ public class AddLensActivity extends AppCompatActivity  implements AdapterView.O
 
     public void onNothingSelected(AdapterView<?> parent){  }
 
+    private void loadLensInfo(){
+
+        //image icons list
+        Spinner spinner = findViewById(R.id.imageSpinnerAdd);
+        Integer[] items = {R.drawable.icon1, R.drawable.icon2, R.drawable.icon3, R.drawable.icon4, R.drawable.icon5, R.drawable.icon6 };
+        ArrayAdapter<Integer> adapter = new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_dropdown_item, items);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(this);
+
+        TextView make = findViewById(R.id.makeInput);
+        TextView focal = findViewById(R.id.focalLengthInput);
+        TextView aperture = findViewById(R.id.apertureInput);
+
+        String[] listValues = lensData.split(",");
+
+        make.setText(listValues[0]);
+        aperture.setText(listValues[1]);
+        focal.setText(listValues[2]);
+        spinner.setSelection(Arrays.asList(items).indexOf(Integer.parseInt(listValues[3])));
+
+    }
+
     private boolean saveLensData(){
 
         Spinner spinner = findViewById(R.id.imageSpinnerAdd);
@@ -99,10 +141,15 @@ public class AddLensActivity extends AppCompatActivity  implements AdapterView.O
 
                     SharedPreferences sharedPreferences = AddLensActivity.this.getSharedPreferences(getString(R.string.sharedPrefFile), Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
-
+                    editor.remove(lensData);
                     editor.putInt(lens.getInfo(), LENS_INFO_DATA).apply();
 
-                    Toast.makeText(AddLensActivity.this, "Successfully added lens!", Toast.LENGTH_SHORT).show();
+                    if(lensData.equals("")){
+                        Toast.makeText(AddLensActivity.this, "Successfully added lens!", Toast.LENGTH_SHORT).show();
+                    }
+                    Toast.makeText(AddLensActivity.this, "Successfully edited lens!", Toast.LENGTH_SHORT).show();
+
+                    this.lensData = lens.getInfo();
                     return true;
 
                 } else {
