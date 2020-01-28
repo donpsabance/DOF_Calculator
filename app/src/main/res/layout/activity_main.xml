@@ -83,4 +83,13 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.92" />
 
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:text="@string/optional_features_neverything_except_app_bar_buttons"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline2" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

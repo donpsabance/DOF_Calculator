@@ -29,4 +29,5 @@
     <string name="backButton">Back</string>
     <string name="featuresList">Optional feautures:  3.1) Error checking inputs 3.2) Edit and Delete Lens</string>
     <string name="image_icon">Image Icon</string>
+    <string name="optional_features_neverything_except_app_bar_buttons">Optional Features: \nEverything except app bar buttons</string>
 </resources>
